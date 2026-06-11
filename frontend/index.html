@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快递分拨中心仿真系统</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>快递分拨中心 - 离散事件仿真</h1>
+        </header>
+        <div class="main-layout">
+            <aside class="left-panel">
+                <div class="panel-section">
+                    <h3>工具</h3>
+                    <div class="tool-buttons">
+                        <button id="tool-select" class="tool-btn active" title="选择/拖拽">&#9654; 选择</button>
+                        <button id="tool-add-gate" class="tool-btn" title="添加分拣口">&#10010; 分拣口</button>
+                        <button id="tool-add-conveyor" class="tool-btn" title="添加传送带">&#8594; 传送带</button>
+                        <button id="tool-delete" class="tool-btn" title="删除">&#10005; 删除</button>
+                    </div>
+                </div>
+                <div class="panel-section">
+                    <h3>仿真参数</h3>
+                    <label>到达速率 (包裹/秒)
+                        <input type="range" id="arrival-rate" min="0.5" max="30" step="0.5" value="5">
+                        <span id="arrival-rate-val">5.0</span>
+                    </label>
+                    <label>仿真时长 (秒)
+                        <input type="number" id="duration" min="10" max="3600" value="120">
+                    </label>
+                    <label>随机种子
+                        <input type="number" id="seed" value="42">
+                    </label>
+                </div>
+                <div class="panel-section">
+                    <h3>操作</h3>
+                    <button id="btn-run" class="action-btn primary">运行仿真</button>
+                    <button id="btn-compare" class="action-btn">对比仿真</button>
+                    <button id="btn-reset" class="action-btn">重置布局</button>
+                    <button id="btn-save" class="action-btn">保存布局</button>
+                </div>
+                <div class="panel-section" id="properties-panel" style="display:none;">
+                    <h3>属性</h3>
+                    <div id="props-content"></div>
+                </div>
+            </aside>
+
+            <main class="canvas-area">
+                <canvas id="sim-canvas"></canvas>
+                <div class="zoom-controls">
+                    <button id="btn-zoom-in" title="放大">+</button>
+                    <button id="btn-zoom-reset" title="重置视图">&#8634;</button>
+                    <button id="btn-zoom-out" title="缩小">&minus;</button>
+                </div>
+                <div class="canvas-controls">
+                    <button id="btn-play" disabled>&#9654; 播放动画</button>
+                    <button id="btn-pause" disabled>&#10074;&#10074; 暂停</button>
+                    <input type="range" id="anim-speed" min="0.5" max="20" step="0.5" value="5" title="播放速度">
+                    <span id="anim-speed-val">5x</span>
+                    <span id="sim-time-display">t = 0.00s</span>
+                </div>
+            </main>
+
+            <aside class="right-panel">
+                <div class="panel-section">
+                    <h3>系统统计</h3>
+                    <div id="system-stats">
+                        <p class="placeholder">运行仿真后显示结果</p>
+                    </div>
+                </div>
+                <div class="panel-section">
+                    <h3>分拣口统计</h3>
+                    <div id="gate-stats">
+                        <p class="placeholder">运行仿真后显示结果</p>
+                    </div>
+                </div>
+                <div class="panel-section">
+                    <h3>瓶颈分析</h3>
+                    <div id="bottleneck-info">
+                        <p class="placeholder">利用率 &gt; 90% 标记为瓶颈</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Comparison overlay panel -->
+        <div id="compare-panel" class="compare-panel" style="display:none;">
+            <div class="compare-header">
+                <h2>布局对比结果</h2>
+                <button id="compare-close" class="compare-close-btn">&times;</button>
+            </div>
+            <div class="compare-body">
+                <div class="compare-column">
+                    <h3>方案 A (修改前)</h3>
+                    <div id="compare-stats-a"></div>
+                    <div id="compare-gates-a"></div>
+                </div>
+                <div class="compare-divider"></div>
+                <div class="compare-column">
+                    <h3>方案 B (修改后)</h3>
+                    <div id="compare-stats-b"></div>
+                    <div id="compare-gates-b"></div>
+                </div>
+            </div>
+            <div class="compare-summary" id="compare-summary"></div>
+        </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/animation.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/panel.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
